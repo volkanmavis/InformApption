@@ -37,7 +37,7 @@ const login = async (req, res) => {
         }
 
         let token = jwt.sign({email: user.email, userId: user._id}, "fenerbahce")
-        res.send({msg: "login successfully", token})
+        res.send({msg: "login successfully", token, role: user.role})
 
     } catch (error) {
         console.error(error);

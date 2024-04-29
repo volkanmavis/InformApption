@@ -13,5 +13,15 @@ const verifyToken = (req, res, next)=>{
     }
 
 }
+const restrict = (role) =>{
+    return(req, res, next) =>{
+        if(req.user.role !== role){
+            res.status(401).json({ error: 'you are not authorized'});
+            next(error)
+        }
+        next();
+    }
+     
+}
 
-module.exports = verifyToken
+module.exports = {verifyToken, restrict};
