@@ -15,7 +15,7 @@ function Register() {
       let res = await axios.post("http://localhost:8000/users/register", user);
       console.log(res.data);
 
-      navigate('/login');
+      navigate('/');
     } catch (error) {
       console.log("registration error:", error); 
     }

@@ -1,16 +1,17 @@
+const express = require('express');
+
 const router = express.Router();
-const { verifyToken, restrict } = require('../middleware/auth');
 
 const { 
     getAllQuestions,
     createQuestion,
     deleteQuestion,
-    updateQuestion,
+    updateQuestion
 } = require('../controllers/questionController');
 
-router.get('/all', verifyToken, restrict('admin'), getAllQuestions);
-router.post('/create', verifyToken, restrict('admin'), createQuestion);
-router.delete('/:id', verifyToken, restrict('admin'), deleteQuestion);
-router.put('/:id', verifyToken, restrict('admin'), updateQuestion);
+router.get('/all', getAllQuestions);
+router.post('/create', createQuestion);
+router.delete('/:id', deleteQuestion);
+router.put('/:id', updateQuestion);
 
 module.exports = router;

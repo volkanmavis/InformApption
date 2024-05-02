@@ -1,64 +1,72 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom"; // Allows us to link to different routes
-import { jwtDecode } from "jwt-decode"; // Allows us to decode the token
-
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import "./navbar.css";
 
 const Navbar = () => {
-  let navigate = useNavigate();
-  let token;
-  let decoded;
-  if (localStorage.getItem("token")) {
-    token = localStorage.getItem("token");
-    decoded = jwtDecode(token);
-  }
-  function handleLogout() {
-    if (localStorage.getItem("token")) {
-      if (window.confirm("Are you sure you want to logout?")) {
-        localStorage.removeItem("token");
-        console.log("Logout successfully");
-        navigate("/login");
-      }
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  const [role, setRole] = useState(null);
+
+  useEffect(() => {
+    const decodedToken = token ? jwtDecode(token) : null;
+    if (decodedToken) {
+      setRole(decodedToken.role);
     }
-  }
+  }, [token]);
+
+  const handleLogout = () => {
+    if (window.confirm("Are you sure you want to logout?")) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      navigate("/login");
+    }
+  };
 
   return (
-    <div className="navbar">
-      <h1>InformApption</h1>
-      {token ? (
+    token && (
+      <div className="navbar">
+        <h1>InformApption</h1>
         <div className="links1">
-          <Link to="/" className="link">
-            Home
-          </Link>
-          {/* Conditional rendering based on user role */}
-          {decoded && decoded.role === "user" && (
-            <Link to="/user-page" className="link">
+          {role === "user" && (
+            <div>
+            <Link to="/play" className="link">
+              Let's Play
+            </Link>
+            <Link to="/userpage" id="user-page" className="link">
               User Page
             </Link>
-          )}
-          {decoded && decoded.role === "admin" && (
-            <Link to="/admin-page" className="link">
-              Admin Page
+            <Link to="/howtoplay" id="how-to-play" className="link">
+              How to Play?
             </Link>
+            </div>
           )}
+          {role === "admin" && (
+            <div>
+              <Link to="/adminpage" className="link">
+                Admin Dashboard
+              </Link>
+              <Link to="/quizzes" id="quizzes" className="link">
+                Quizzes
+              </Link>
+              <Link to="/newquestion" id="new-question" className="link">
+                New Question
+              </Link>
+              <Link to="/allusers" id="all-users" className="link">
+                Users
+              </Link>
+            </div>
+          )}
+          <Link to="/leaderboard" className="link">
+            Leader Board
+          </Link>
           <Link onClick={handleLogout} to="/" className="link">
             Logout
           </Link>
         </div>
-      ) : (
-        <div className="links2">
-          <Link to="/" className="link">
-            Home
-          </Link>
-          <Link to="/login" className="link">
-            Login
-          </Link>
-          <Link to="/register" className="link">
-            Register
-          </Link>
-        </div>
-      )}
-    </div>
+      </div>
+    )
   );
 };
 
-export default Navbar
+export default Navbar;

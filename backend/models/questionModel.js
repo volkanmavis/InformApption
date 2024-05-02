@@ -1,14 +1,13 @@
 const mongoose = require("mongoose");
 
-const QuestionSchema = new mongoose.Schema({
+const questionSchema = new mongoose.Schema({
   category: { type: String, required: true },
   difficulty: { type: String, required: true },
   question: { type: String, required: true },
-  correct_answer:{ type: String, required: true },
-  incorrect_answers: { type: String, required: true },
-  userOwner: { type: mongoose.Schema.Types.ObjectId, ref: "users", required: true },
+  answer:{ type: String, required: true },
+  incorrectAnswers: [{ type: String, required: true }],
 });
 
-const QuestionModel = mongoose.model("Question", QuestionSchema);
+const QuestionModel = mongoose.model("Question", questionSchema);
 
-module.exports = QuestionModel
+module.exports = QuestionModel;

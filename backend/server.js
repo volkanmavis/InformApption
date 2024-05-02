@@ -9,6 +9,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/users', require('./routers/userRoutes'));
+app.use('/questions', require('./routers/questionRoutes'));
 
 
 connectToDB();

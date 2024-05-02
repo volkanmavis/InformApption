@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState("");
@@ -31,6 +32,10 @@ const Login = () => {
     }
   };
 
+  const handleRegisterClick = () => {
+    navigate('/register');
+  };
+
   return (
     <div className='login-container'>
       <input
@@ -50,6 +55,10 @@ const Login = () => {
         onChange={(e) => setPassword(e.target.value)}
       /> 
       <button onClick={handleLogin}>Login</button>
+      <div>
+        <p>Not registered yet?</p>
+        <button onClick={handleRegisterClick}>Register</button>
+      </div>
     </div>
   );
 }

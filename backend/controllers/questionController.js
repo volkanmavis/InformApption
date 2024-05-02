@@ -3,10 +3,10 @@ const Question = require('../models/questionModel');
 const getAllQuestions = async (req, res) => {
     try {
         const questions = await Question.find();
-        res.status(200).send(questions);
+        res.status(200).json({ status: true, data: questions });
     } catch (error) {
-        console.error('Error fetching blogs:', error);
-        res.status(500).send({ msg: "Internal server error", status: false });
+        console.error('Error fetching questions:', error);
+        res.status(500).json({ status: false, error: "Internal server error" });
     }
 };
 
@@ -16,25 +16,28 @@ const createQuestion = async (req, res) => {
             category: req.body.category, 
             difficulty: req.body.difficulty, 
             question: req.body.question, 
-            correct_answer: req.body.correct_answer,
-            incorrect_answers: req.body.incorrect_answers
+            answer: req.body.answer,
+            incorrectAnswers: req.body.incorrectAnswers
         };
         const newQuestion = await Question.create(data);
-        res.status(201).send({ msg: "Question created successfully", status: true, newQuestion }); // Changed status to 201 for "Created" status
+        res.status(201).send({ msg: "Question created successfully", status: true, newQuestion });
     } catch (error) {
-        console.error('Error creating blog:', error);
+        console.error('Error creating question:', error);
         res.status(500).send({ msg: "Internal server error", status: false });
     }
 };
 
 const deleteQuestion = async (req, res) => {
     try {
-        const { id } = req.params
-        await Question.deleteOne({_id: id})
-        res.status(200).send({msg: "deleted successfully", status: true});
+        const { id } = req.params;
+        const deletedQuestion = await Question.findByIdAndDelete(id);
+        if (!deletedQuestion) {
+            return res.status(404).json({ status: false, error: "Question not found" });
+        }
+        res.status(200).json({ status: true, message: "Question deleted successfully" });
     } catch (error) {
         console.error('Error deleting question:', error);
-        res.status(500).send({ msg: "Internal server error", status: false });
+        res.status(500).json({ status: false, error: "Internal server error" });
     }
 };
 
@@ -42,11 +45,14 @@ const updateQuestion = async (req, res) => {
     try {
         const { id } = req.params;
         const data = req.body;
-        let updated = await Question.updateOne({_id: id}, data)
-        res.status(200).send({ msg: "updated successfully", status: true, updated });
+        const updatedQuestion = await Question.findByIdAndUpdate(id, data, { new: true });
+        if (!updatedQuestion) {
+            return res.status(404).json({ status: false, error: "Question not found" });
+        }
+        res.status(200).json({ status: true, message: "Question updated successfully", data: updatedQuestion });
     } catch (error) {
         console.error('Error updating question:', error);
-        res.status(500).send({ msg: "Internal server error", status: false });
+        res.status(500).json({ status: false, error: "Internal server error" });
     }
 };
 

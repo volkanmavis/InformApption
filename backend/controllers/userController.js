@@ -36,7 +36,7 @@ const login = async (req, res) => {
             return res.status(400).send({ msg: 'Invalid password' });
         }
 
-        let token = jwt.sign({email: user.email, userId: user._id}, "fenerbahce")
+        let token = jwt.sign({email: user.email, userId: user._id, role: user.role}, "fenerbahce")
         res.send({msg: "login successfully", token, role: user.role})
 
     } catch (error) {
@@ -45,5 +45,25 @@ const login = async (req, res) => {
     }
 };
 
+const getAllUsers = async (req, res) => {
+    try {
+        const allUsers = await User.find();
+        res.status(200).json({ status: true, data: allUsers });
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        res.status(500).json({ status: false, error: "Internal server error" });
+    }
+};
 
-module.exports = { register, login };
+const deleteUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await User.deleteOne({_id: id});
+        res.status(200).json({ status: true, message: "User deleted successfully" });
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).json({ status: false, error: "Internal server error" });
+    }
+};
+
+module.exports = { register, login, getAllUsers, deleteUser };
