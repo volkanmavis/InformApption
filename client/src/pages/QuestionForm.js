@@ -8,7 +8,7 @@ function QuestionForm() {
   const [category, setCategory] = useState('');
   const [difficulty, setDifficulty] = useState('');
   const [question, setQuestion] = useState('');
-  const [answer, setAnswer] = useState('');
+  const [correctAnswer, setCorrectAnswer] = useState('');
   const [incorrectAnswers, setIncorrectAnswers] = useState(['', '', '']);
 
   let token = localStorage.getItem('token');
@@ -20,7 +20,7 @@ function QuestionForm() {
         category,
         difficulty,
         question,
-        answer,
+        correctAnswer,
         incorrectAnswers: incorrectAnswers.filter(Boolean) // Filter out empty strings
       };
       console.log(questionInfo)
@@ -75,8 +75,8 @@ function QuestionForm() {
         <input
           className='answer'
           placeholder='Correct Answer'
-          value={answer}
-          onChange={(e) => setAnswer(e.target.value)}
+          value={correctAnswer}
+          onChange={(e) => setCorrectAnswer(e.target.value)}
         />
         {incorrectAnswers.map((value, index) => (
           <input

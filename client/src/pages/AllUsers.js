@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './allUsers.css'
+import '../pages/css/allUsers.css'
 
 function AllUsers() {
     const [users, setUsers] = useState([]);
@@ -37,8 +37,8 @@ function AllUsers() {
     };
 
     return (
+        <div className='all-users'>
         <div className='container'>
-            <h1>Registered Users</h1>
             {users.map((user) => (
                 <div className='card' key={user._id}>
                     <p><b>Email:</b> {user.email}</p>
@@ -47,6 +47,7 @@ function AllUsers() {
                     <button onClick={() => confirmDeleteUser(user._id)}>Delete</button>
                 </div>
             ))}
+        </div>
         </div>
     );
 }

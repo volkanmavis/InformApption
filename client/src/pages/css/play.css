@@ -1,0 +1,29 @@
+@import url(https://fonts.googleapis.com/css?family=Bangers);
+
+.play-container{
+    height: 500px;
+    background-color: brown;
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    margin-left: 250px;
+    margin-right: 250px;
+    padding-top: 40px;
+    border-radius: 20px;
+}
+.game-screen, .game-over{
+}
+.game-screen h2{
+    font-size: xx-large;
+}
+.game-screen li{
+    list-style: none;
+}
+.game-screen li button{
+    border-radius: 10px;
+    font-size: x-large;
+}
+.choices{
+    display: grid;
+    grid-template-columns: repeat(2, 300px [col-start]);
+}

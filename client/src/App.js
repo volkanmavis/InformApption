@@ -11,14 +11,18 @@ import QuestionForm from './pages/QuestionForm';
 import AllUsers from './pages/AllUsers';
 import Quizzes from './pages/Quizzes';
 import LeaderBoard from './pages/LeaderBoard';
-import Play from './pages/Play';
 import HowToPlay from './pages/HowToPlay';
+import Footer from './components/Footer';
+import SavedQuestions from './pages/SavedQuestions';
+import Play from './pages/Play';
+
 
 function App() {
   return (
     <div className="App">
         <Router>
           <Navbar/>
+          <div className='app-body'>
           <Routes>
             <Route element={<Login/>} path="/"/>
             <Route element={<Register/>} path="/register"/>
@@ -31,10 +35,11 @@ function App() {
                 <Route element={<LeaderBoard/>} path="/leaderboard"/>
                 <Route element={<Play/>} path="/play"/>
                 <Route element={<HowToPlay/>} path="/howtoplay"/>
-
+                <Route element={<SavedQuestions/>} path="/allquestions"/>
             </Route>
-            
           </Routes>
+          </div>
+          <Footer/>
       </Router>
     </div>
   );

@@ -1,0 +1,10 @@
+.all-questions{
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 60px;
+}
+.container{
+    display: grid;
+    grid-template-columns: repeat(4, 300px [col-start]);
+}

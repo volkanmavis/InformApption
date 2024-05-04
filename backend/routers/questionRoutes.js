@@ -9,7 +9,7 @@ const {
     updateQuestion
 } = require('../controllers/questionController');
 
-router.get('/all', getAllQuestions);
+router.get('/allquestions', getAllQuestions);
 router.post('/create', createQuestion);
 router.delete('/:id', deleteQuestion);
 router.put('/:id', updateQuestion);

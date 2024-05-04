@@ -12,20 +12,29 @@ const getAllQuestions = async (req, res) => {
 
 const createQuestion = async (req, res) => {
     try { 
+        console.log('Request body:', req.body);
         const data = {
             category: req.body.category, 
             difficulty: req.body.difficulty, 
             question: req.body.question, 
-            answer: req.body.answer,
+            correctAnswer: req.body.correctAnswer,
             incorrectAnswers: req.body.incorrectAnswers
         };
-        const newQuestion = await Question.create(data);
-        res.status(201).send({ msg: "Question created successfully", status: true, newQuestion });
+        // Check if the question already exists
+        const existingQuestion = await Question.findOne({ question: req.body.question });
+        if (existingQuestion) {
+            return res.status(400).json({ error: 'Question already exists' });
+        } else {
+            const newQuestion = await Question.create(data);
+            res.status(201).send({ msg: "Question created successfully", status: true, newQuestion });
+        }
+        
     } catch (error) {
         console.error('Error creating question:', error);
         res.status(500).send({ msg: "Internal server error", status: false });
     }
 };
+
 
 const deleteQuestion = async (req, res) => {
     try {
@@ -55,5 +64,7 @@ const updateQuestion = async (req, res) => {
         res.status(500).json({ status: false, error: "Internal server error" });
     }
 };
+
+
 
 module.exports = { getAllQuestions, createQuestion, deleteQuestion, updateQuestion };

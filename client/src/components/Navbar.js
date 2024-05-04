@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import "./navbar.css";
+import '../components/css/navbar.css'
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -45,6 +45,9 @@ const Navbar = () => {
             <div>
               <Link to="/adminpage" className="link">
                 Admin Dashboard
+              </Link>
+              <Link to="/allquestions" id="questions" className="link">
+                Qestions
               </Link>
               <Link to="/quizzes" id="quizzes" className="link">
                 Quizzes
