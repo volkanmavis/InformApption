@@ -11,7 +11,7 @@
     display:inline-block;
     width:50%;
     margin:5% auto;
-    margin-top: 180px;
+    margin-top: 270px;
     border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
     padding:1em;
     font-size: 22px;
@@ -21,4 +21,15 @@
     line-height:1.5em;
     background:#ffd300;
     border:dotted 5px hsla(0, 95%, 35%, 1);
+}
+@media (max-width: 1000px) {
+    .howto {
+        height: 40vh; /* Adjust height for smaller screens */
+    }
+    
+    .howto p {
+
+        width: 80%; /* Adjust width for smaller screens */
+        margin-top: 370px; /* Adjust margin-top for smaller screens */
+    }
 }

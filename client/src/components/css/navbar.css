@@ -13,6 +13,11 @@
     font-weight: 400;
     font-style: normal;
     font-size: 15px;
+    position: fixed;
+    top: 0;
+}
+.navbar h1{
+    margin-left: 20px;
 }
 
 .links1, .links2{
@@ -37,4 +42,10 @@
 #new-question, #all-users, #quizzes, #user-page, #how-to-play, #questions {
     margin-left: 20px;
     background-color: #4e4cae;
+}
+@media (max-width: 915px){
+    .navbar{
+        
+    }
+   
 }

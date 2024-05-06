@@ -1,29 +1,107 @@
-@import url(https://fonts.googleapis.com/css?family=Bangers);
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
 
-.play-container{
+.game-screen {
+    width: 700px;
     height: 500px;
-    background-color: brown;
+    margin: 20px auto;
+    margin-top: 60px;
+    background-color: #fff;
+    padding: 10px 50px 50px 50px;
+    border-radius: 50px;
+    border: 2px solid #cbcbcb;
+    box-shadow: 10px 15px 5px #cbcbcb;
+    font-family: "Comic Neue", cursive;
+    font-weight: 400;
+    font-style: normal;
+}
+.time-score {
+    margin-top: 50px;
     display: flex;
+    justify-content: space-around;
+}
+
+.question-answer{
+    margin-top: 80px;
     justify-content: center;
-    margin-top: 30px;
-    margin-left: 250px;
-    margin-right: 250px;
-    padding-top: 40px;
-    border-radius: 20px;
 }
-.game-screen, .game-over{
+
+.question-container {
+    text-align: center;
 }
-.game-screen h2{
-    font-size: xx-large;
+
+.question {
+    font-size: 30px;
+    color: #5a6772;
+    margin-bottom: 20px;
+    position: fixed;
 }
-.game-screen li{
+
+.choices {
     list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-top: 30px;
+
 }
-.game-screen li button{
-    border-radius: 10px;
-    font-size: x-large;
+
+.choices li {
+    display: inline-block;
+    margin: 10px;
+
 }
-.choices{
-    display: grid;
-    grid-template-columns: repeat(2, 300px [col-start]);
+
+.answer-button {
+    background: #405CA1;
+    width: 250px;
+    font-size: 20px;
+    border: 1px solid #1d3c6a;
+    border-radius: 50px;
+    padding: 10px;
+    color: #fff;
+    font-family: "Comic Neue", cursive;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.answer-button:hover {
+    cursor: pointer;
+    background: #2D85A4;
+}
+
+.answer-button:focus {
+    outline: 0;
+}
+
+.game-over{
+    width: 700px;
+    height: 500px;
+    margin: 20px auto;
+    margin-top: 60px;
+    background-color: #fff;
+    padding: 10px 50px 50px 50px;
+    border-radius: 50px;
+    border: 2px solid #cbcbcb;
+    box-shadow: 10px 15px 5px #cbcbcb;
+    font-family: "Comic Neue", cursive;
+    font-weight: 400;
+    font-style: normal;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.try-again{
+    background: #405CA1;
+    width: 150px;
+    font-size: 20px;
+    border: 1px solid #1d3c6a;
+    border-radius: 50px;
+    padding: 10px;
+    color: #fff;
+}
+.try-again:hover {
+    cursor: pointer;
+    background: #2D85A4;
 }

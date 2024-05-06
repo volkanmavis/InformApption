@@ -23,10 +23,14 @@ const Navbar = () => {
     }
   };
 
+  const logoHomePage = ()=>{
+    navigate('/adminpage')
+  }
+
   return (
     token && (
       <div className="navbar">
-        <h1>InformApption</h1>
+        <h1 onClick={logoHomePage}>InformApption</h1>
         <div className="links1">
           {role === "user" && (
             <div>
