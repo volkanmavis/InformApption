@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import '../pages/css/questionForm.css'
 
 function QuestionForm() {
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ function QuestionForm() {
   const difficultyOptions = ["Easy", "Medium", "Hard"];
 
   return (
-    <div className='form'>
+    <div className='question-form'>
       <form onSubmit={createQuestion}>
         <div className='category'>
           <select name='category' id='category' value={category} onChange={(e) => setCategory(e.target.value)}>

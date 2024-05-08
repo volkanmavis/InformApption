@@ -39,26 +39,28 @@ const Login = () => {
 
   return (
     <div className='login-container'>
-      <input
-        placeholder='Email'
-        type="text"
-        name="email"
-        id="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        placeholder='Password'
-        type="password"
-        name="password"
-        id="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      /> 
-      <button onClick={handleLogin}>Login</button>
-      <div>
-        <p>Not registered yet?</p>
-        <button onClick={handleRegisterClick}>Register</button>
+      <div className='login-form'>
+        <title>Login</title>
+        <input
+          placeholder='Email'
+          type="text"
+          name="email"
+          id="email-login"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          placeholder='Password'
+          type="password"
+          name="password"
+          id="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        /> 
+        <button id="submit-button" align="center" onClick={handleLogin}>Login</button>
+        <div>
+          <p onClick={handleRegisterClick} align="center" id='not-registered'>Not registered yet?</p>
+        </div>
       </div>
     </div>
   );

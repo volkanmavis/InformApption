@@ -1,4 +1,4 @@
-.login-container{
+.register-container{
     background-color: #8381e3;
     height: 100vh;
     background-size: 70%;
@@ -6,9 +6,9 @@
     background-repeat: no-repeat;
     background-position: right;
     padding-top: 100px;
-
 }
-.login-form{
+
+.register-form{
     background-color: #FFFFFF;
     width: 400px;
     height: 400px;
@@ -19,8 +19,28 @@
     margin-left: 50px;
     gap: 20px;
 }
-#email-login{
+#username{
     margin-top: 50px;
+    width: 76%;
+    color: rgb(38, 50, 56);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1px;
+    background: rgba(136, 126, 126, 0.04);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    outline: none;
+    box-sizing: border-box;
+    border: 2px solid rgba(0, 0, 0, 0.02);
+    margin-bottom: 50px;
+    margin-left: 46px;
+    text-align: center;
+    margin-bottom: 27px;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+#email{
     width: 76%;
     color: rgb(38, 50, 56);
     font-weight: 700;
@@ -58,7 +78,7 @@
     margin-bottom: 27px;
     font-family: 'Ubuntu', sans-serif;
 }
-#submit-button{
+#register-button{
     cursor: pointer;
     border-radius: 5em;
     color: #fff;
@@ -73,9 +93,4 @@
     margin-right: 35%;
     font-size: 13px;
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
-}
-#not-registered{
-    text-shadow: 0px 0px 3px rgba(117, 117, 117, 0.12);
-    color: #952aa8;
-    padding-top: 15px;
 }

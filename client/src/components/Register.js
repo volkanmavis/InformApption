@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './css/register.css'
 
 function Register() {
   const [email, setEmail] = useState('');
@@ -23,32 +24,34 @@ function Register() {
 
   return (
     <div className='register-container'>
-      <input
-        placeholder='Username'
-        type="text"
-        name="username"
-        id="username"
-        value={userName}
-        onChange={(e) => setUserName(e.target.value)}
-      />
+      <div className='register-form'>
+        <input
+          placeholder='Username'
+          type="text"
+          name="username"
+          id="username"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
+        />
 
-      <input
-        placeholder='E-mail'
-        type="text"
-        name="email"
-        id="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        placeholder='Password'
-        type="password"
-        name="password"
-        id="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={register}>Register</button>
+        <input
+          placeholder='E-mail'
+          type="text"
+          name="email"
+          id="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          placeholder='Password'
+          type="password"
+          name="password"
+          id="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button id='register-button' onClick={register}>Register</button>
+      </div>
     </div>
   )
 }
