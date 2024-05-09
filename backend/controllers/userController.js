@@ -66,4 +66,37 @@ const deleteUser = async (req, res) => {
     }
 };
 
-module.exports = { register, login, getAllUsers, deleteUser };
+const updateScore = async(req, res) => {
+    const { userId, score } = req.body;
+
+  try {
+    // Find user by ID
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Update user's score
+    user.scores.push(score);
+    await user.save();
+
+    return res.status(200).json({ message: 'Score updated successfully' });
+  } catch (error) {
+    console.error('Error updating score:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+const getUserInfo = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const allInfo = await User.findById({_id: id});
+        res.status(200).json({ status: true, data: allInfo });
+    } catch (error) {
+        console.error('Error fetching user info:', error);
+        res.status(500).json({ status: false, error: "Internal server error" });
+    }
+};
+
+module.exports = { register, login, getAllUsers, deleteUser, updateScore, getUserInfo };

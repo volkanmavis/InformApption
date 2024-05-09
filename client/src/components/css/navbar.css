@@ -39,10 +39,24 @@
     text-decoration: none;
     background-color: #4e4cae;
 }
-#new-question, #all-users, #quizzes, #user-page, #how-to-play, #questions {
+#new-question, #all-users, #quizzes, #user-page, #how-to-play, #questions, #lets-play {
     margin-left: 20px;
     background-color: #4e4cae;
 }
+#best-score{
+    color: #fff;
+    text-shadow:
+    0 0 7px #c96db7,
+    0 0 10px #d428ba,
+    0 0 21px #de76d2,
+    0 0 42px rgb(163, 31, 137),
+    0 0 82px rgb(183, 54, 146),
+    0 0 92px rgb(255, 0, 255),
+    0 0 102px rgb(126, 34, 123),
+
+}
+
+
 @media (max-width: 915px){
     .navbar{
         

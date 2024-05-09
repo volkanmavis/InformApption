@@ -16,8 +16,7 @@ const Login = () => {
       let res = await axios.post("http://localhost:8000/users/login", user);
       let token = res.data.token;
       localStorage.setItem("token", token);
-      
-      // Redirect based on role
+
       const role = res.data.role;
       if (role === 'admin') {
         navigate('/adminpage');

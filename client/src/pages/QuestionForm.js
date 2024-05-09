@@ -22,7 +22,7 @@ function QuestionForm() {
         difficulty,
         question,
         correctAnswer,
-        incorrectAnswers: incorrectAnswers.filter(Boolean) // Filter out empty strings
+        incorrectAnswers: incorrectAnswers.filter(Boolean)
       };
       console.log(questionInfo)
       event.preventDefault();
@@ -41,7 +41,6 @@ function QuestionForm() {
     updatedAnswers[index] = value;
     setIncorrectAnswers(updatedAnswers);
   };
-
 
   const categoryOptions = ["Animals", "Art", "Cinema", "Entertainment", "General Knowledge", "Geography", "History", "Literature", "Music", "Science", "Sport"];
   const difficultyOptions = ["Easy", "Medium", "Hard"];

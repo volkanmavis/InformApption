@@ -2,18 +2,43 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import '../components/css/navbar.css'
+import axios from "axios";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [role, setRole] = useState(null);
+  const [userScores, setUserScores] = useState(null);
+  const decodedToken = token ? jwtDecode(token) : null;
+  const userId = decodedToken ? decodedToken.userId : null;
 
   useEffect(() => {
     const decodedToken = token ? jwtDecode(token) : null;
     if (decodedToken) {
       setRole(decodedToken.role);
+      if (decodedToken.role === "user") {
+        fetchUserScores(userId);
+      }
     }
-  }, [token]);
+  }, [token, userId]);
+
+  const fetchUserScores = async (userId) => {
+    try {
+      const response = await axios.get(`http://localhost:8000/users/score/${userId}`);
+
+      setUserScores(response.data.data.scores);
+      
+    } catch (error) {
+      console.error("Error fetching user scores:", error);
+    }
+  };
+
+  const getHighestScore = () => {
+    if (!userScores || userScores.length === 0) {
+      return null;
+    }
+    return Math.max(...userScores);
+  };
 
   const handleLogout = () => {
     if (window.confirm("Are you sure you want to logout?")) {
@@ -23,26 +48,22 @@ const Navbar = () => {
     }
   };
 
-  const logoHomePage = ()=>{
-    navigate('/adminpage')
-  }
-
   return (
     token && (
       <div className="navbar">
-        <h1 onClick={logoHomePage}>InformApption</h1>
+        <h1>InformApption</h1>
         <div className="links1">
           {role === "user" && (
             <div>
-            <Link to="/play" className="link">
-              Let's Play
-            </Link>
-            <Link to="/userpage" id="user-page" className="link">
-              User Page
-            </Link>
-            <Link to="/howtoplay" id="how-to-play" className="link">
-              How to Play?
-            </Link>
+              <Link id="best-score" className="link">
+                Your Best: {getHighestScore()}
+              </Link>
+              <Link id="lets-play" to="/play" className="link">
+                Let's Play
+              </Link>
+              <Link to="/howtoplay" id="how-to-play" className="link">
+                How to Play?
+              </Link>
             </div>
           )}
           {role === "admin" && (
@@ -51,7 +72,7 @@ const Navbar = () => {
                 Admin Dashboard
               </Link>
               <Link to="/allquestions" id="questions" className="link">
-                Qestions
+                Questions
               </Link>
               <Link to="/quizzes" id="quizzes" className="link">
                 Quizzes

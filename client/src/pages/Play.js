@@ -1,16 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import '../pages/css/play.css';
+import axios from 'axios';
+import {jwtDecode} from 'jwt-decode'; // Change to import jwtDecode from 'jwt-decode';
 
 function Play() {
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null);
   const [isGameOver, setIsGameOver] = useState(false);
   const [timer, setTimer] = useState(15);
-  const [score, setScore] = useState(0); // Add score state
+  const [score, setScore] = useState(0);
+  const [choice, setChoice] = useState(null);
+
+  const token = localStorage.getItem("token");
+  const decodedToken = token ? jwtDecode(token) : null;
+  const userId = decodedToken ? decodedToken.userId : null;
+  
 
   useEffect(() => {
-    fetchRandomQuestion();
-  }, []);
+    if (choice !== null) {
+      fetchRandomQuestion();
+    }
+  }, [choice]);
 
   useEffect(() => {
     let interval;
@@ -33,8 +43,10 @@ function Play() {
       .then(response => response.json())
       .then(data => {
         // Assuming 'data' is an array containing all the questions
-        const randomIndex = Math.floor(Math.random() * data.data.length);
-        const randomQuestion = data.data[randomIndex];
+        const questionDifficulty = data.data.filter(question => question.difficulty === `${choice}`);
+        const randomIndex = Math.floor(Math.random() * questionDifficulty.length);
+        console.log(questionDifficulty)
+        const randomQuestion = questionDifficulty[randomIndex];
         setCurrentQuestion(randomQuestion);
       })
       .catch(error => {
@@ -50,10 +62,24 @@ function Play() {
         setSelectedOption(null); // Reset selected option
       } else {
         setIsGameOver(true);
+        // Send score to backend
+        if (userId) {
+          axios.post('http://localhost:8000/users/updateScore', { userId, score })
+            .then(response => {
+              console.log('Score updated successfully.');
+            })
+            .catch(error => {
+              console.error('Error updating score:', error);
+            });
+        }
       }
     } else {
       console.error('Invalid current question format or incorrectAnswers is not an array.');
     }
+  };
+
+  const startGame = (chosenDifficulty) => {
+    setChoice(chosenDifficulty);
   };
 
   const handleOptionSelect = (option) => {
@@ -63,17 +89,26 @@ function Play() {
 
   const restartGame = () => {
     setIsGameOver(false);
-    setScore(0); // Reset score
+    setScore(0);
     fetchRandomQuestion();
   };
 
   return (
     <div className='play-container'>
-      {isGameOver ? (
+      {choice === null ? ( // Ask for difficulty choice if not chosen
+        <div className='difficulty-selection'>
+          <h1>Choose Your Poison</h1>
+          <div className='difficulty-buttons'>
+            <button onClick={() => startGame('easy')}>Easy</button>
+            <button onClick={() => startGame('medium')}>Medium</button>
+            <button onClick={() => startGame('hard')}>Hard</button>
+          </div>
+        </div>
+      ) : isGameOver ? (
         <div className='game-over'>
           <h2>Game Over!</h2>
           <p>You picked the wrong answer or time ran out.</p>
-          <p>Your score: {score}</p> {/* Display score */}
+          <p>Your score: {score}</p> 
           <button className='try-again' onClick={restartGame}>Try Again!</button>
         </div>
       ) : (
@@ -81,26 +116,27 @@ function Play() {
           <div>
             <div className='time-score'>
               <h2 id='timer'>Time: {timer} </h2>
-              <h2>Score: {score}</h2> {/* Display score */}
+              <h2>Score: {score}</h2> 
             </div>
-          {currentQuestion && (
-            <div className='question-answer'>
-              <h2>{currentQuestion.question}</h2>
-              
-              <ul className='choices'>
-                {currentQuestion.incorrectAnswers && currentQuestion.incorrectAnswers.concat(currentQuestion.correctAnswer).map((option, index) => (
-                  <li key={index}>
-                    <button className='answer-button' onClick={() => handleOptionSelect(option)}>{option}</button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+            {currentQuestion && (
+              <div className='question-answer'>
+                <h2>{currentQuestion.question}</h2>
+                
+                <ul className='choices'>
+                  {currentQuestion.incorrectAnswers && currentQuestion.incorrectAnswers.concat(currentQuestion.correctAnswer).map((option, index) => (
+                    <li key={index}>
+                      <button className='answer-button' onClick={() => handleOptionSelect(option)}>{option}</button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       )}
     </div>
   );
 }
+
 
 export default Play;
