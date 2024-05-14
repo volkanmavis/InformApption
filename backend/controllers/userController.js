@@ -66,27 +66,41 @@ const deleteUser = async (req, res) => {
     }
 };
 
-const updateScore = async(req, res) => {
-    const { userId, score } = req.body;
+const updateScore = async (req, res) => {
+    try {
+        const { userId, score, choice } = req.body;
+        const user = await User.findById(userId);
 
-  try {
-    // Find user by ID
-    const user = await User.findById(userId);
+        // Initialize scores if not already initialized
+        if (!user.scores) {
+            user.scores = { easy: [], medium: [], hard: [] };
+        }
 
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+        // Check the choice and push the score into the appropriate difficulty array
+        switch (choice) {
+            case 'easy':
+                user.scores.easy.push(score);
+                break;
+            case 'medium':
+                user.scores.medium.push(score);
+                break;
+            case 'hard':
+                user.scores.hard.push(score);
+                break;
+            default:
+                return res.status(400).json({ error: 'Invalid choice' });
+        }
+
+        await user.save();
+
+        return res.status(200).json({ message: 'Score updated successfully' });
+    } catch (error) {
+        console.error('Error updating score:', error);
+        return res.status(500).json({ error: 'Internal server error' });
     }
-
-    // Update user's score
-    user.scores.push(score);
-    await user.save();
-
-    return res.status(200).json({ message: 'Score updated successfully' });
-  } catch (error) {
-    console.error('Error updating score:', error);
-    return res.status(500).json({ error: 'Internal server error' });
-  }
 };
+
+
 
 const getUserInfo = async (req, res) => {
     try {
@@ -100,3 +114,4 @@ const getUserInfo = async (req, res) => {
 };
 
 module.exports = { register, login, getAllUsers, deleteUser, updateScore, getUserInfo };
+

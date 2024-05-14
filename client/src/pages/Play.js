@@ -45,7 +45,6 @@ function Play() {
         // Assuming 'data' is an array containing all the questions
         const questionDifficulty = data.data.filter(question => question.difficulty === `${choice}`);
         const randomIndex = Math.floor(Math.random() * questionDifficulty.length);
-        console.log(questionDifficulty)
         const randomQuestion = questionDifficulty[randomIndex];
         setCurrentQuestion(randomQuestion);
       })
@@ -64,7 +63,7 @@ function Play() {
         setIsGameOver(true);
         // Send score to backend
         if (userId) {
-          axios.post('http://localhost:8000/users/updateScore', { userId, score })
+          axios.post('http://localhost:8000/users/updateScore', { userId, score, choice })
             .then(response => {
               console.log('Score updated successfully.');
             })
@@ -97,11 +96,11 @@ function Play() {
     <div className='play-container'>
       {choice === null ? ( // Ask for difficulty choice if not chosen
         <div className='difficulty-selection'>
-          <h1>Choose Your Poison</h1>
+          <h1 className='game-heading'>Choose Your Poison</h1>
           <div className='difficulty-buttons'>
-            <button onClick={() => startGame('easy')}>Easy</button>
-            <button onClick={() => startGame('medium')}>Medium</button>
-            <button onClick={() => startGame('hard')}>Hard</button>
+            <button id='easy' onClick={() => startGame('easy')}>EASY</button>
+            <button id='medium' onClick={() => startGame('medium')}>MEDIUM</button>
+            <button id='hard' onClick={() => startGame('hard')}>HARD</button>
           </div>
         </div>
       ) : isGameOver ? (

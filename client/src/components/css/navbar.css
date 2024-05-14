@@ -46,14 +46,14 @@
 #best-score{
     color: #fff;
     text-shadow:
-    0 0 7px #c96db7,
-    0 0 10px #d428ba,
-    0 0 21px #de76d2,
-    0 0 42px rgb(163, 31, 137),
-    0 0 82px rgb(183, 54, 146),
-    0 0 92px rgb(255, 0, 255),
-    0 0 102px rgb(126, 34, 123),
-
+    0 0 7px #fff,
+    0 0 10px #fff,
+    0 0 21px #fff,
+    0 0 42px #0fa,
+    0 0 82px #0fa,
+    0 0 92px #0fa,
+    0 0 102px #0fa,
+    0 0 151px #0fa;
 }
 
 

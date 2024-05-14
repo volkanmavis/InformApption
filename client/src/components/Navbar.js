@@ -33,11 +33,18 @@ const Navbar = () => {
     }
   };
 
-  const getHighestScore = () => {
+  const getHighestScore = (userScores) => {
     if (!userScores || userScores.length === 0) {
       return null;
     }
-    return Math.max(...userScores);
+  
+    const highestScores = {
+      easy: Math.max(...userScores.easy),
+      medium: Math.max(...userScores.medium),
+      hard: Math.max(...userScores.hard)
+    };
+  
+    return highestScores;
   };
 
   const handleLogout = () => {
@@ -56,7 +63,6 @@ const Navbar = () => {
           {role === "user" && (
             <div>
               <Link id="best-score" className="link">
-                Your Best: {getHighestScore()}
               </Link>
               <Link id="lets-play" to="/play" className="link">
                 Let's Play
