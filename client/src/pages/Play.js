@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../pages/css/play.css';
 import axios from 'axios';
-import {jwtDecode} from 'jwt-decode'; // Change to import jwtDecode from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 
 function Play() {
   const [currentQuestion, setCurrentQuestion] = useState(null);
@@ -10,11 +10,11 @@ function Play() {
   const [timer, setTimer] = useState(15);
   const [score, setScore] = useState(0);
   const [choice, setChoice] = useState(null);
+  const [canPlay, setCanPlay] = useState(true); // New state
 
   const token = localStorage.getItem("token");
   const decodedToken = token ? jwtDecode(token) : null;
   const userId = decodedToken ? decodedToken.userId : null;
-  
 
   useEffect(() => {
     if (choice !== null) {
@@ -34,18 +34,36 @@ function Play() {
     return () => clearInterval(interval);
   }, [timer, isGameOver]);
 
+  useEffect(() => {
+    if (userId) {
+      axios.get(`http://localhost:8000/users/canPlay/${userId}`)
+        .then(response => {
+          setCanPlay(response.data.canPlay);
+        })
+        .catch(error => {
+          console.error('Error checking play eligibility:', error);
+        });
+    }
+  }, [userId]);
+
   const fetchRandomQuestion = () => {
-    // Reset timer
     setTimer(15);
 
-    // Fetch all questions from the backend API
     fetch('http://localhost:8000/questions/allquestions')
       .then(response => response.json())
       .then(data => {
-        // Assuming 'data' is an array containing all the questions
         const questionDifficulty = data.data.filter(question => question.difficulty === `${choice}`);
         const randomIndex = Math.floor(Math.random() * questionDifficulty.length);
         const randomQuestion = questionDifficulty[randomIndex];
+
+        const answerChoices = [...randomQuestion.incorrectAnswers, randomQuestion.correctAnswer];
+        for (let i = answerChoices.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [answerChoices[i], answerChoices[j]] = [answerChoices[j], answerChoices[i]];
+        }
+
+        randomQuestion.answerChoices = answerChoices;
+
         setCurrentQuestion(randomQuestion);
       })
       .catch(error => {
@@ -54,14 +72,13 @@ function Play() {
   };
 
   const checkAnswer = (selectedAnswer) => {
-    if (currentQuestion && currentQuestion.incorrectAnswers && Array.isArray(currentQuestion.incorrectAnswers)) {
+    if (currentQuestion && currentQuestion.answerChoices && Array.isArray(currentQuestion.answerChoices)) {
       if (selectedAnswer === currentQuestion.correctAnswer) {
-        setScore(score + 10); // Increase score by 10 for correct answer
-        fetchRandomQuestion(); // Fetch next random question
-        setSelectedOption(null); // Reset selected option
+        setScore(score + 10);
+        fetchRandomQuestion();
+        setSelectedOption(null);
       } else {
         setIsGameOver(true);
-        // Send score to backend
         if (userId) {
           axios.post('http://localhost:8000/users/updateScore', { userId, score, choice })
             .then(response => {
@@ -73,7 +90,7 @@ function Play() {
         }
       }
     } else {
-      console.error('Invalid current question format or incorrectAnswers is not an array.');
+      console.error('Invalid current question format or answerChoices is not an array.');
     }
   };
 
@@ -94,9 +111,13 @@ function Play() {
 
   return (
     <div className='play-container'>
-      {choice === null ? ( // Ask for difficulty choice if not chosen
+      {!canPlay ? ( // If the user cannot play, show a message
+        <div className='play-limit-message'>
+          <h2>You have reached the play limit for today. Please come back tomorrow!</h2>
+        </div>
+      ) : choice === null ? ( // Ask for difficulty choice if not chosen
         <div className='difficulty-selection'>
-          <h1 className='game-heading'>Choose Your Poison</h1>
+          <h1 className='game-heading'>Choose Your Difficulty</h1>
           <div className='difficulty-buttons'>
             <button id='easy' onClick={() => startGame('easy')}>EASY</button>
             <button id='medium' onClick={() => startGame('medium')}>MEDIUM</button>
@@ -107,7 +128,7 @@ function Play() {
         <div className='game-over'>
           <h2>Game Over!</h2>
           <p>You picked the wrong answer or time ran out.</p>
-          <p>Your score: {score}</p> 
+          <p>Your score: {score}</p>
           <button className='try-again' onClick={restartGame}>Try Again!</button>
         </div>
       ) : (
@@ -115,14 +136,14 @@ function Play() {
           <div>
             <div className='time-score'>
               <h2 id='timer'>Time: {timer} </h2>
-              <h2>Score: {score}</h2> 
+              <h2 id='score'>Score: {score}</h2>
             </div>
             {currentQuestion && (
               <div className='question-answer'>
                 <h2>{currentQuestion.question}</h2>
-                
+
                 <ul className='choices'>
-                  {currentQuestion.incorrectAnswers && currentQuestion.incorrectAnswers.concat(currentQuestion.correctAnswer).map((option, index) => (
+                  {currentQuestion.answerChoices.map((option, index) => (
                     <li key={index}>
                       <button className='answer-button' onClick={() => handleOptionSelect(option)}>{option}</button>
                     </li>
@@ -136,6 +157,5 @@ function Play() {
     </div>
   );
 }
-
 
 export default Play;

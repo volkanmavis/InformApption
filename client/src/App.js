@@ -27,6 +27,7 @@ function App() {
             <Route element={<Login/>} path="/"/>
             <Route element={<Register/>} path="/register"/>
             <Route element={<PrivateRoutes />}>
+                <Route element={<UserPage/>} path="/userpage"/>
                 <Route element={<AdminPage/>} path="/adminpage"/>
                 <Route element={<Quizzes/>} path="/quizzes"/>
                 <Route element={<QuestionForm/>} path="/newquestion"/>

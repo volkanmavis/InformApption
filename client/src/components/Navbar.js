@@ -70,6 +70,9 @@ const Navbar = () => {
               <Link to="/howtoplay" id="how-to-play" className="link">
                 How to Play?
               </Link>
+              <Link to="/userpage" id="user-page" className="link">
+                My Page
+              </Link>
             </div>
           )}
           {role === "admin" && (

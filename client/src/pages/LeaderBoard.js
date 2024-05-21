@@ -17,29 +17,34 @@ function LeaderBoard() {
     try {
       const response = await axios.get("http://localhost:8000/users/allusers");
       const allUsers = response.data.data;
-      const userDataArray = [];
 
-      // Iterate through each user and push their data into the array
+      const topScores = {
+        easy: [],
+        medium: [],
+        hard: []
+      };
+
       allUsers.forEach(user => {
-        const { email, scores } = user;
-        // For each user, push their email and scores for each difficulty category
-        Object.keys(scores).forEach(difficulty => {
-          userDataArray.push({ email, difficulty, score: scores[difficulty] });
+        Object.keys(user.scores).forEach(difficulty => {
+          const scoresArray = user.scores[difficulty];
+          if (Array.isArray(scoresArray)) { // Check if scoresArray is an array
+            scoresArray.forEach(score => {
+              topScores[difficulty].push({ email: user.email, score });
+            });
+          } else {
+            console.error(`Scores for ${difficulty} difficulty level are not in the expected array format.`);
+          }
         });
       });
 
-      // Sort the userDataArray based on score for each difficulty
-      userDataArray.sort((a, b) => b.score - a.score);
+      // Sort top scores arrays by score in descending order
+      Object.keys(topScores).forEach(difficulty => {
+        topScores[difficulty].sort((a, b) => b.score - a.score);
+        // Get top 5 scores for each difficulty
+        topScores[difficulty] = topScores[difficulty].slice(0, 5);
+      });
 
-      // Populate leaderboardData
-      const updatedLeaderboardData = {
-        easy: userDataArray.filter(user => user.difficulty === 'easy'),
-        medium: userDataArray.filter(user => user.difficulty === 'medium'),
-        hard: userDataArray.filter(user => user.difficulty === 'hard')
-      };
-
-      setLeaderboardData(updatedLeaderboardData);
-      console.log(updatedLeaderboardData)
+      setLeaderboardData(topScores);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -62,7 +67,7 @@ function LeaderBoard() {
   };
 
   return (
-    <div>
+    <div className='all-boards'>
       {renderLeaderboard('easy')}
       {renderLeaderboard('medium')}
       {renderLeaderboard('hard')}

@@ -21,7 +21,7 @@ const Login = () => {
       if (role === 'admin') {
         navigate('/adminpage');
       } else if (role === 'user') {
-        navigate('/userpage');
+        navigate('/play');
       } else {
         console.error('Invalid role received:', role);
         navigate('/login')
