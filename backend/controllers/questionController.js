@@ -65,6 +65,17 @@ const updateQuestion = async (req, res) => {
     }
 };
 
+const resetFailedAttempts = async (req, res) => {
+    const { userId } = req.body;
+  
+  try {
+    await User.findByIdAndUpdate(userId, { failedAttempts: 0 });
+    res.status(200).send({ message: 'Failed attempts reset successfully.' });
+  } catch (error) {
+    console.error('Error resetting failed attempts:', error);
+    res.status(500).send({ message: 'Error resetting failed attempts.' });
+  }
+};
 
 
 module.exports = { getAllQuestions, createQuestion, deleteQuestion, updateQuestion };

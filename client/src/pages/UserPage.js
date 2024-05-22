@@ -10,6 +10,9 @@ function UserPage() {
   const [mediumScores, setMediumScores] = useState([]);
   const [hardScores, setHardScores] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [email, setEmail] = useState("");
+  const [lastLogin, setLastLogin] = useState("");
+  const [registration, setRegistration] = useState("")
 
   const token = localStorage.getItem("token");
   const decodedToken = token ? jwtDecode(token) : null;
@@ -42,9 +45,28 @@ function UserPage() {
       const sortedMediumScores = allInfo.scores.medium.sort((a, b) => b - a);
       const sortedHardScores = allInfo.scores.hard.sort((a, b) => b - a);
 
+      const userEmail = allInfo.email;
+      const userLogin = allInfo.lastLoginDate;
+      const userRegistration = allInfo.registerDate;
+
+      const formatDateTime = (dateString) => {
+        const options = {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        };
+        const date = new Date(dateString);
+        return date.toLocaleString('en-GB', options).replace(',', '');
+      };
+
       setEasyScores(sortedEasyScores);
       setMediumScores(sortedMediumScores);
       setHardScores(sortedHardScores);
+      setEmail(userEmail);
+      setLastLogin(formatDateTime(userLogin));
+      setRegistration(formatDateTime(userRegistration))
       setUserInfo({
         ...allInfo,
         firstThreeEasyScores,
@@ -68,97 +90,127 @@ function UserPage() {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
-
   return (
-    <div className="user-container">
-      <div className="ag-format-container">
-        <div className="ag-courses_box">
-          <div className="ag-courses_item">
-            <a href="#" className="ag-courses-item_link">
-              <div className="ag-courses-item_bg"></div>
+    <div>
+      <div className="user-container">
+        <div className="ag-format-container">
+          <div className="ag-courses_box">
+            <div className="ag-courses_item">
+              <a href="#" className="ag-courses-item_link">
+                <div className="ag-courses-item_bg"></div>
 
-              <div className="ag-courses-item_title">
-                Easy
-              </div>
+                <div className="ag-courses-item_title">
+                  Easy
+                </div>
 
-              <div className="ag-courses-item_date-box">
-                Your Best: 
-                <span className="ag-courses-item_date">
-                  {easyScores.length > 0 ? easyScores[0] : 'N/A'}
-                </span>
-              </div>
-              <div className="ag-courses-item_date-box">
-                Last Three Games: 
-                <span className="ag-courses-item_date">
-                  {userInfo.firstThreeEasyScores.join(', ') || 'N/A'}
-                </span>
-              </div>
-              <div className="ag-courses-item_date-box">
-                Average Score: 
-                <span className="ag-courses-item_date">
-                  {userInfo.averageEasy || 'N/A'}
-                </span>
-              </div>
-            </a>
+                <div className="ag-courses-item_date-box">
+                  Your Best:
+                  <span className="ag-courses-item_date">
+                    {easyScores.length > 0 ? easyScores[0] : 'N/A'}
+                  </span>
+                </div>
+                <div className="ag-courses-item_date-box">
+                  Last Three Games:
+                  <span className="ag-courses-item_date">
+                    {userInfo.firstThreeEasyScores.join(', ') || 'N/A'}
+                  </span>
+                </div>
+                <div className="ag-courses-item_date-box">
+                  Average Score:
+                  <span className="ag-courses-item_date">
+                    {userInfo.averageEasy || 'N/A'}
+                  </span>
+                </div>
+              </a>
+            </div>
+
+            <div className="ag-courses_item">
+              <a href="#" className="ag-courses-item_link">
+                <div className="ag-courses-item_bg"></div>
+
+                <div className="ag-courses-item_title">
+                  Medium
+                </div>
+
+                <div className="ag-courses-item_date-box">
+                  Your Best:
+                  <span className="ag-courses-item_date">
+                    {mediumScores.length > 0 ? mediumScores[0] : 'N/A'}
+                  </span>
+                </div>
+                <div className="ag-courses-item_date-box">
+                  Last Three Games:
+                  <span className="ag-courses-item_date">
+                    {userInfo.firstThreeMediumScores.join(', ') || 'N/A'}
+                  </span>
+                </div>
+                <div className="ag-courses-item_date-box">
+                  Average Score:
+                  <span className="ag-courses-item_date">
+                    {userInfo.averageMedium || 'N/A'}
+                  </span>
+                </div>
+              </a>
+            </div>
+
+            <div className="ag-courses_item">
+              <a href="#" className="ag-courses-item_link">
+                <div className="ag-courses-item_bg"></div>
+
+                <div className="ag-courses-item_title">
+                  Hard
+                </div>
+                <div className="ag-courses-item_date-box">
+                  Your Best:
+                  <span className="ag-courses-item_date">
+                    {hardScores.length > 0 ? hardScores[0] : 'N/A'}
+                  </span>
+                </div>
+                <div className="ag-courses-item_date-box">
+                  Last Three Games:
+                  <span className="ag-courses-item_date">
+                    {userInfo.firstThreeHardScores.join(', ') || 'N/A'}
+                  </span>
+                </div>
+                <div className="ag-courses-item_date-box">
+                  Average Score:
+                  <span className="ag-courses-item_date">
+                    {userInfo.averageHard || 'N/A'}
+                  </span>
+                </div>
+              </a>
+            </div>
+
+            <div className="ag-courses_item">
+              <a href="#" className="ag-courses-item_link">
+                <div className="ag-courses-item_bg"></div>
+
+                <div className="ag-courses-item_title">
+                  User Details
+                </div>
+
+                <div className="ag-courses-item_date-box">
+                  E-mail:
+                  <span className="ag-courses-item_date">
+                    {email}
+                  </span>
+                </div>
+                <div className="ag-courses-item_date-box">
+                  Last Login:
+                  <span className="ag-courses-item_date">
+                    {lastLogin}
+                  </span>
+                </div>
+                <div className="ag-courses-item_date-box">
+                  Registration:
+                  <span className="ag-courses-item_date">
+                    {registration}
+                  </span>
+                </div>
+              </a>
+            </div>
+
           </div>
-
-          <div className="ag-courses_item">
-            <a href="#" className="ag-courses-item_link">
-              <div className="ag-courses-item_bg"></div>
-
-              <div className="ag-courses-item_title">
-                Medium
-              </div>
-
-              <div className="ag-courses-item_date-box">
-                Your Best:
-                <span className="ag-courses-item_date">
-                  {mediumScores.length > 0 ? mediumScores[0] : 'N/A'}
-                </span>
-              </div>
-              <div className="ag-courses-item_date-box">
-                Last Three Games: 
-                <span className="ag-courses-item_date">
-                  {userInfo.firstThreeMediumScores.join(', ') || 'N/A'}
-                </span>
-              </div>
-              <div className="ag-courses-item_date-box">
-                Average Score: 
-                <span className="ag-courses-item_date">
-                  {userInfo.averageMedium || 'N/A'}
-                </span>
-              </div>
-            </a>
-          </div>
-
-          <div className="ag-courses_item">
-            <a href="#" className="ag-courses-item_link">
-              <div className="ag-courses-item_bg"></div>
-
-              <div className="ag-courses-item_title">
-                Hard
-              </div>
-              <div className="ag-courses-item_date-box">
-                Your Best:
-                <span className="ag-courses-item_date">
-                  {hardScores.length > 0 ? hardScores[0] : 'N/A'}
-                </span>
-              </div>
-              <div className="ag-courses-item_date-box">
-                Last Three Games: 
-                <span className="ag-courses-item_date">
-                  {userInfo.firstThreeHardScores.join(', ') || 'N/A'}
-                </span>
-              </div>
-              <div className="ag-courses-item_date-box">
-                Average Score: 
-                <span className="ag-courses-item_date">
-                  {userInfo.averageHard || 'N/A'}
-                </span>
-              </div>
-            </a>
-          </div>
-
         </div>
       </div>
     </div>

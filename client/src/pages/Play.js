@@ -10,7 +10,8 @@ function Play() {
   const [timer, setTimer] = useState(15);
   const [score, setScore] = useState(0);
   const [choice, setChoice] = useState(null);
-  const [canPlay, setCanPlay] = useState(true); // New state
+  const [canPlay, setCanPlay] = useState(true);
+  const [failedAttempts, setFailedAttempts] = useState(0);
 
   const token = localStorage.getItem("token");
   const decodedToken = token ? jwtDecode(token) : null;
@@ -38,7 +39,9 @@ function Play() {
     if (userId) {
       axios.get(`http://localhost:8000/users/canPlay/${userId}`)
         .then(response => {
+          console.log(response.data)
           setCanPlay(response.data.canPlay);
+          
         })
         .catch(error => {
           console.error('Error checking play eligibility:', error);
@@ -87,6 +90,18 @@ function Play() {
             .catch(error => {
               console.error('Error updating score:', error);
             });
+
+          axios.post('http://localhost:8000/users/updateFailedAttempts', { userId })
+            .then(response => {
+              setFailedAttempts(prevAttempts => prevAttempts + 1);
+              if (failedAttempts + 1 >= 3) {
+                setCanPlay(false);
+              }
+              console.log('Failed attempt recorded.');
+            })
+            .catch(error => {
+              console.error('Error recording failed attempt:', error);
+            });
         }
       }
     } else {
@@ -95,7 +110,11 @@ function Play() {
   };
 
   const startGame = (chosenDifficulty) => {
-    setChoice(chosenDifficulty);
+    if (failedAttempts >= 3) {
+      setCanPlay(false);
+    } else {
+      setChoice(chosenDifficulty);
+    }
   };
 
   const handleOptionSelect = (option) => {
@@ -106,56 +125,66 @@ function Play() {
   const restartGame = () => {
     setIsGameOver(false);
     setScore(0);
-    fetchRandomQuestion();
+    setChoice(null);
+    setFailedAttempts(0);
+    axios.post('http://localhost:8000/users/resetFailedAttempts', { userId })
+      .then(response => {
+        console.log('Failed attempts reset successfully.');
+      })
+      .catch(error => {
+        console.error('Error resetting failed attempts:', error);
+      });
   };
 
   return (
     <div className='play-container'>
-      {!canPlay ? ( // If the user cannot play, show a message
+      {canPlay ? ( // Check if the user can play
+        choice === null ? ( // Ask for difficulty choice if not chosen
+          <div className='difficulty-selection'>
+            <h1 className='game-heading'>Choose Your Difficulty</h1>
+            <div className='difficulty-buttons'>
+              <button id='easy' onClick={() => startGame('easy')}>EASY</button>
+              <button id='medium' onClick={() => startGame('medium')}>MEDIUM</button>
+              <button id='hard' onClick={() => startGame('hard')}>HARD</button>
+            </div>
+          </div>
+        ) : isGameOver ? (
+          <div className='game-over'>
+            <h2>Game Over!</h2>
+            <p>You picked the wrong answer or time ran out.</p>
+            <p>Your score: {score}</p>
+            <button className='try-again' onClick={restartGame}>Try Again!</button>
+          </div>
+        ) : (
+          <div className='game-screen'>
+            <div>
+              <div className='time-score'>
+                <h2 id='timer'>Time: {timer} </h2>
+                <h2 id='score'>Score: {score}</h2>
+              </div>
+              {currentQuestion && (
+                <div className='question-answer'>
+                  <h2>{currentQuestion.question}</h2>
+  
+                  <ul className='choices'>
+                    {currentQuestion.answerChoices.map((option, index) => (
+                      <li key={index}>
+                        <button className='answer-button' onClick={() => handleOptionSelect(option)}>{option}</button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
+        )
+      ) : (
         <div className='play-limit-message'>
           <h2>You have reached the play limit for today. Please come back tomorrow!</h2>
-        </div>
-      ) : choice === null ? ( // Ask for difficulty choice if not chosen
-        <div className='difficulty-selection'>
-          <h1 className='game-heading'>Choose Your Difficulty</h1>
-          <div className='difficulty-buttons'>
-            <button id='easy' onClick={() => startGame('easy')}>EASY</button>
-            <button id='medium' onClick={() => startGame('medium')}>MEDIUM</button>
-            <button id='hard' onClick={() => startGame('hard')}>HARD</button>
-          </div>
-        </div>
-      ) : isGameOver ? (
-        <div className='game-over'>
-          <h2>Game Over!</h2>
-          <p>You picked the wrong answer or time ran out.</p>
-          <p>Your score: {score}</p>
-          <button className='try-again' onClick={restartGame}>Try Again!</button>
-        </div>
-      ) : (
-        <div className='game-screen'>
-          <div>
-            <div className='time-score'>
-              <h2 id='timer'>Time: {timer} </h2>
-              <h2 id='score'>Score: {score}</h2>
-            </div>
-            {currentQuestion && (
-              <div className='question-answer'>
-                <h2>{currentQuestion.question}</h2>
-
-                <ul className='choices'>
-                  {currentQuestion.answerChoices.map((option, index) => (
-                    <li key={index}>
-                      <button className='answer-button' onClick={() => handleOptionSelect(option)}>{option}</button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
         </div>
       )}
     </div>
   );
 }
-
+  
 export default Play;

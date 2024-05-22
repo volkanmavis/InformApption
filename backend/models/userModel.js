@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    email: { type: String, required: true, lowercase: true },
+    userName: { type: String, required: true },
+    email: { type: String, required: true, lowercase: true, unique: true },
     password: { type: String, required: true },
     role: { type: String, enum: ['user', 'admin'], default: 'user' },
     scores: {
@@ -9,9 +10,9 @@ const userSchema = new mongoose.Schema({
         medium: [{ type: Number}],
         hard: [{ type: Number}]
     },
-    gameSessions: {
-        type: [Date],
-        default: []
+    failedAttempts: {
+        count: { type: Number, default: 0 },
+        lastFailed: { type: Date, default: null },
     },
     registerDate: {
         type: Date,
@@ -19,6 +20,10 @@ const userSchema = new mongoose.Schema({
     },
     lastLoginDate: {
         type: Date
+    },
+    gameSessions: { 
+        type: [Date], 
+        default: [] 
     }
 });
 

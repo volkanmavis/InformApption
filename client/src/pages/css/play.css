@@ -149,11 +149,11 @@
      -webkit-transition: all 0.5s;
 }
 #easy{
-    border: 5px solid green;
+    border: 5px solid #3ecd5e;
 }
 #easy:hover{
-    border: 5px solid green;
-    background-color: green;
+    border: 5px solid #3ecd5e;
+    background-color: #3ecd5e;
     box-shadow: 0 0 20px hsla(129, 77%, 57%, 0.267);
     transform: scale(1.1);
 }
@@ -165,11 +165,11 @@
      transform: scale(0.98);
 }
 #medium{
-    border: 5px solid rgb(241, 206, 32);
+    border: 5px solid #f9b234;
 }
 #medium:hover{
-    border: 5px solid rgb(241, 206, 32);
-    background-color: rgb(241, 206, 32);
+    border: 5px solid #f9b234;
+    background-color: #f9b234;
     box-shadow: 0 0 20px #e6d63f44;
     transform: scale(1.1);
 }
@@ -181,11 +181,11 @@
      transform: scale(0.98);
 }
 #hard{
-    border: 5px solid red;
+    border: 5px solid #e44002;
 }
 #hard:hover{
-    border: 5px solid red;
-    background-color: red;
+    border: 5px solid #e44002;
+    background-color: #e44002;
     box-shadow: 0 0 20px #f1480b50;
     transform: scale(1.1);
 }
@@ -222,5 +222,16 @@
    to {
      background-position: 200% center;
    }
+}
+
+.play-limit-message{
+    margin-top: 200px;
+    display: flex;
+    justify-content: center;
+    font-family: "Comic Neue", cursive;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 20px;
+    color: #f9b234;
 }
 
