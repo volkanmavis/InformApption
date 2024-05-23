@@ -174,7 +174,7 @@
     transform: scale(1.1);
 }
 #medium:active{
-    background-color: rgb(255, 233, 125);
+    background-color: #ffe97d;
     transition: all 0.25s;
      -webkit-transition: all 0.25s;
      box-shadow: none;
@@ -234,4 +234,3 @@
     font-size: 20px;
     color: #f9b234;
 }
-

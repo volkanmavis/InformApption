@@ -47,7 +47,15 @@ function QuestionForm() {
 
   return (
     <div className='question-form'>
+      <textarea
+          className='question'
+          placeholder='Question'
+          value={question}
+          onChange={(e) => setQuestion(e.target.value)}
+        />
       <form onSubmit={createQuestion}>
+        <div className='elements-container'>
+          
         <div className='category'>
           <select name='category' id='category' value={category} onChange={(e) => setCategory(e.target.value)}>
             <option value=''>Select Category</option>
@@ -66,12 +74,6 @@ function QuestionForm() {
             ))}
           </select>
         </div>
-        <textarea
-          className='question'
-          placeholder='Question'
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-        />
         <input
           className='answer'
           placeholder='Correct Answer'
@@ -88,6 +90,7 @@ function QuestionForm() {
           />
         ))}
         <input className='submit' type='submit' value='Create Question' />
+        </div>
       </form>
     </div>
   );

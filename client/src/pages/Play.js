@@ -39,9 +39,11 @@ function Play() {
     if (userId) {
       axios.get(`http://localhost:8000/users/canPlay/${userId}`)
         .then(response => {
-          console.log(response.data)
-          setCanPlay(response.data.canPlay);
-          
+          const { canPlay, failedAttempts } = response.data;
+          setCanPlay(canPlay);
+          setFailedAttempts(failedAttempts);
+          localStorage.setItem('canPlay', canPlay);
+          localStorage.setItem('failedAttempts', failedAttempts);
         })
         .catch(error => {
           console.error('Error checking play eligibility:', error);
@@ -93,9 +95,12 @@ function Play() {
 
           axios.post('http://localhost:8000/users/updateFailedAttempts', { userId })
             .then(response => {
-              setFailedAttempts(prevAttempts => prevAttempts + 1);
-              if (failedAttempts + 1 >= 3) {
+              const updatedFailedAttempts = response.data.failedAttempts;
+              setFailedAttempts(updatedFailedAttempts);
+              localStorage.setItem('failedAttempts', updatedFailedAttempts);
+              if (updatedFailedAttempts >= 3) {
                 setCanPlay(false);
+                localStorage.setItem('canPlay', 'false');
               }
               console.log('Failed attempt recorded.');
             })
@@ -112,6 +117,7 @@ function Play() {
   const startGame = (chosenDifficulty) => {
     if (failedAttempts >= 3) {
       setCanPlay(false);
+      localStorage.setItem('canPlay', 'false');
     } else {
       setChoice(chosenDifficulty);
     }
@@ -127,6 +133,9 @@ function Play() {
     setScore(0);
     setChoice(null);
     setFailedAttempts(0);
+    setCanPlay(true);
+    localStorage.setItem('failedAttempts', '0');
+    localStorage.setItem('canPlay', 'true');
     axios.post('http://localhost:8000/users/resetFailedAttempts', { userId })
       .then(response => {
         console.log('Failed attempts reset successfully.');
@@ -186,5 +195,5 @@ function Play() {
     </div>
   );
 }
-  
+
 export default Play;

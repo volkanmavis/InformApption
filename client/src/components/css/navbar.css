@@ -57,9 +57,19 @@
 }
 
 
-@media (max-width: 915px){
-    .navbar{
-        
+@media (max-width: 920px) {
+    .links1 {
+        display: none;
     }
-   
+
+    .menu-button {
+        display: block;
+        margin-right: 20px;
+        cursor: pointer;
+        font-size: 20px;
+    }
+}
+
+.menu-button {
+    display: none;
 }

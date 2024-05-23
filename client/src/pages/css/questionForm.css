@@ -1,14 +1,68 @@
-.question-form{
-    width: 700px;
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
+
+.question-form {
+    width: 800px;
     height: 500px;
     margin: 20px auto;
     margin-top: 60px;
     background-color: #fff;
-    padding: 10px 50px 50px 50px;
     border-radius: 50px;
     border: 2px solid #cbcbcb;
     box-shadow: 10px 15px 5px #cbcbcb;
     font-family: "Comic Neue", cursive;
     font-weight: 400;
     font-style: normal;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
+.question {
+    width: 50%;
+    padding: 10px;
+    margin-top: -250px; 
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 150px;
+}
+  
+.elements-container {
+  position: relative;
+  margin-top: 150px;
+  font-family: "Comic Neue", cursive;
+    font-weight: 400;
+    font-style: normal;
+}
+  
+.category select,
+.answer,
+.incorrect-answer {
+    width: calc(50% - 5px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+  
+.selects {
+    display: flex;
+    justify-content: space-between;
+}
+  
+.submit {
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #8381e3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+  
+.submit:hover {
+    background-color: #4e4cae;
+}
+  
