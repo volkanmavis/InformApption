@@ -65,4 +65,15 @@
 .submit:hover {
     background-color: #4e4cae;
 }
-  
+
+@media (max-width: 915px){
+    .question-form {
+        width: 500px;
+        margin-top: 80px;
+        padding: auto;
+    }
+    .elements-container {
+        width: 450px;
+    }
+   
+}

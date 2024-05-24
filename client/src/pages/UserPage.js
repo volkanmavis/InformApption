@@ -11,6 +11,7 @@ function UserPage() {
   const [hardScores, setHardScores] = useState([]);
   const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [lastLogin, setLastLogin] = useState("");
   const [registration, setRegistration] = useState("")
 
@@ -48,6 +49,7 @@ function UserPage() {
       const userEmail = allInfo.email;
       const userLogin = allInfo.lastLoginDate;
       const userRegistration = allInfo.registerDate;
+      const userName = allInfo.userName
 
       const formatDateTime = (dateString) => {
         const options = {
@@ -65,6 +67,7 @@ function UserPage() {
       setMediumScores(sortedMediumScores);
       setHardScores(sortedHardScores);
       setEmail(userEmail);
+      setUsername(userName);
       setLastLogin(formatDateTime(userLogin));
       setRegistration(formatDateTime(userRegistration))
       setUserInfo({
@@ -187,6 +190,13 @@ function UserPage() {
 
                 <div className="ag-courses-item_title">
                   User Details
+                </div>
+
+                <div className="ag-courses-item_date-box">
+                  Username:
+                  <span className="ag-courses-item_date">
+                    {username}
+                  </span>
                 </div>
 
                 <div className="ag-courses-item_date-box">

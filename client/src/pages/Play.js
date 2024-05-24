@@ -18,6 +18,22 @@ function Play() {
   const userId = decodedToken ? decodedToken.userId : null;
 
   useEffect(() => {
+    if (userId) {
+      axios.get(`http://localhost:8000/users/canPlay/${userId}`)
+        .then(response => {
+          const { canPlay, failedAttempts } = response.data;
+          setCanPlay(canPlay);
+          setFailedAttempts(failedAttempts);
+          localStorage.setItem('canPlay', canPlay);
+          localStorage.setItem('failedAttempts', failedAttempts);
+        })
+        .catch(error => {
+          console.error('Error checking play eligibility:', error);
+        });
+    }
+  }, [userId]);
+
+  useEffect(() => {
     if (choice !== null) {
       fetchRandomQuestion();
     }
@@ -34,22 +50,6 @@ function Play() {
     }
     return () => clearInterval(interval);
   }, [timer, isGameOver]);
-
-  useEffect(() => {
-    if (userId) {
-      axios.get(`http://localhost:8000/users/canPlay/${userId}`)
-        .then(response => {
-          const { canPlay, failedAttempts } = response.data;
-          setCanPlay(canPlay);
-          setFailedAttempts(failedAttempts);
-          localStorage.setItem('canPlay', canPlay);
-          localStorage.setItem('failedAttempts', failedAttempts);
-        })
-        .catch(error => {
-          console.error('Error checking play eligibility:', error);
-        });
-    }
-  }, [userId]);
 
   const fetchRandomQuestion = () => {
     setTimer(15);
@@ -115,12 +115,24 @@ function Play() {
   };
 
   const startGame = (chosenDifficulty) => {
-    if (failedAttempts >= 3) {
-      setCanPlay(false);
-      localStorage.setItem('canPlay', 'false');
-    } else {
-      setChoice(chosenDifficulty);
-    }
+    axios.get(`http://localhost:8000/users/canPlay/${userId}`)
+      .then(response => {
+        const { canPlay, failedAttempts } = response.data;
+        setCanPlay(canPlay);
+        setFailedAttempts(failedAttempts);
+        localStorage.setItem('canPlay', canPlay);
+        localStorage.setItem('failedAttempts', failedAttempts);
+
+        if (canPlay) {
+          setChoice(chosenDifficulty);
+        } else {
+          setCanPlay(false);
+          localStorage.setItem('canPlay', 'false');
+        }
+      })
+      .catch(error => {
+        console.error('Error checking play eligibility:', error);
+      });
   };
 
   const handleOptionSelect = (option) => {
@@ -174,7 +186,7 @@ function Play() {
               {currentQuestion && (
                 <div className='question-answer'>
                   <h2>{currentQuestion.question}</h2>
-  
+
                   <ul className='choices'>
                     {currentQuestion.answerChoices.map((option, index) => (
                       <li key={index}>

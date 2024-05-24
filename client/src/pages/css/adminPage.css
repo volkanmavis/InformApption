@@ -1,6 +1,27 @@
-.active-players{
+.admin-container{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap; 
+    justify-content: space-around;
+    justify-items: center;
     margin-top: 50px;
-    width: 600px;
-    height: 600px;
+}
+.active-players {
+    margin-top: 50px;
+    width: 100%; 
+    max-width: 600px; 
+    height: auto; 
+}
 
+.pie-chart-container {
+    margin-top: 50px;
+    width: 100%; 
+    max-width: 400px; 
+    height: auto;
+}
+.polar-chart-container{
+    margin-top: 50px;
+    width: 100%; 
+    max-width: 600px; 
+    height: auto; 
 }

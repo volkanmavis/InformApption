@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Bar, Pie } from 'react-chartjs-2'; // Import Pie from react-chartjs-2
+import { Bar, Pie, PolarArea } from 'react-chartjs-2'; // Import PolarArea from react-chartjs-2
 import Chart from 'chart.js/auto';
 import './css/adminPage.css';
 
@@ -63,38 +63,83 @@ function AdminPage() {
         }
     };
 
-    // Get data for pie charts
-    const pieChartData = users.map(user => {
-        const { easy, medium, hard } = user.scores;
+    const getTotalScores = (difficulty) => {
+        let totalScore = 0;
+        let totalCount = 0;
+        users.forEach(user => {
+            const scores = user.scores[difficulty];
+            if (scores) {
+                totalScore += scores.reduce((acc, score) => acc + score, 0);
+                totalCount += scores.length;
+            }
+        });
+        return { totalScore, totalCount };
+    };
 
-        const easyCount = easy ? easy.count : 0;
-        const mediumCount = medium ? medium.count : 0;
-        const hardCount = hard ? hard.count : 0;
+    // Calculate total scores and scores for each category
+    const easyScores = getTotalScores('easy');
+    const mediumScores = getTotalScores('medium');
+    const hardScores = getTotalScores('hard');
 
-        return {
-            labels: ['Easy', 'Medium', 'Hard'],
-            datasets: [{
-                label: user.email,
-                data: [easyCount, mediumCount, hardCount],
-                backgroundColor: ['#f9b234', '#ffe97d', '#ffaf46']
-            }]
-        };
-    });
+    const totalEasyScore = easyScores.totalScore;
+    const totalEasyCount = easyScores.totalCount;
+    const totalMediumScore = mediumScores.totalScore;
+    const totalMediumCount = mediumScores.totalCount;
+    const totalHardScore = hardScores.totalScore;
+    const totalHardCount = hardScores.totalCount;
+
+    const averageEasyScore = totalEasyCount ? (totalEasyScore / totalEasyCount).toFixed(2) : 0;
+    const averageMediumScore = totalMediumCount ? (totalMediumScore / totalMediumCount).toFixed(2) : 0;
+    const averageHardScore = totalHardCount ? (totalHardScore / totalHardCount).toFixed(2) : 0;
+
+    const pieChartData = {
+        labels: ['Easy', 'Medium', 'Hard'],
+        datasets: [{
+            data: [totalEasyCount, totalMediumCount, totalHardCount],
+            backgroundColor: ['#33cc33', '#f9b234', '#ff6666'],
+            borderColor: ['#99ff99', '#ffe97d', '#ff9999'],
+            borderWidth: 1,
+        }]
+    };
+
+    const polarChartData = {
+        labels: ['Easy', 'Medium', 'Hard'],
+        datasets: [{
+            data: [averageEasyScore, averageMediumScore, averageHardScore],
+            backgroundColor: ['rgba(51, 204, 51, 0.5)', 'rgba(249, 178, 52, 0.5)', 'rgba(255, 102, 102, 0.5)'],
+            borderColor: ['rgba(51, 204, 51, 1)', 'rgba(249, 178, 52, 1)', 'rgba(255, 102, 102, 1)'],
+            borderWidth: 1,
+        }]
+    };
+
+    const polarOptions = {
+        scales: {
+            r: {
+                ticks: {
+                    color: 'black'
+                }
+            }
+        },
+        plugins: {
+            tooltip: {
+                titleColor: 'white', 
+                bodyColor: 'white',
+            }
+        }
+    };
 
     return (
-        <div>
+        <div className='admin-container'>
             <div className='active-players'>
                 <div className="chart-container">
                     <Bar data={chartData} options={options} />
                 </div>
-                
             </div>
             <div className="pie-chart-container">
-                {users.map((user, index) => (
-                    <div key={index} className="pie-chart">
-                        <Pie data={pieChartData[index]} />
-                    </div>
-                ))}
+                <Pie data={pieChartData} />
+            </div>
+            <div className="polar-chart-container">
+                <PolarArea data={polarChartData} options={polarOptions} />
             </div>
         </div>
     );

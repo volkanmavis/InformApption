@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
 
-.navbar{
+.navbar {
     margin: 0;
     width: 100%;
     height: 40px;
@@ -15,61 +15,90 @@
     font-size: 15px;
     position: fixed;
     top: 0;
+    z-index: 1000;
 }
-.navbar h1{
+
+.navbar h1 {
     margin-left: 20px;
 }
 
-.links1, .links2{
-    margin-right: 20px;
+.links1, .links2 {
     display: flex;
     align-items: center;
     justify-content: space-around;
     gap: 20px;
     background-color: #4e4cae;
 }
-.links{
+
+.links {
     width: 500px;
 }
-.link{
-    color: aliceblue;
-}
 
-.link{
+.link {
+    color: aliceblue;
     text-decoration: none;
     background-color: #4e4cae;
 }
+
 #new-question, #all-users, #quizzes, #user-page, #how-to-play, #questions, #lets-play {
     margin-left: 20px;
     background-color: #4e4cae;
 }
-#best-score{
-    color: #fff;
-    text-shadow:
-    0 0 7px #fff,
-    0 0 10px #fff,
-    0 0 21px #fff,
-    0 0 42px #0fa,
-    0 0 82px #0fa,
-    0 0 92px #0fa,
-    0 0 102px #0fa,
-    0 0 151px #0fa;
+
+.menu-button {
+    display: none;
+    cursor: pointer;
+    font-size: 20px;
+    position: absolute;
+    right: 20px;
+    top: 10px;
+}
+#logout{
+    margin-left: 20px;
+    margin-right: 5px;
+}
+.attempt-left{
+    color: #ffd300;
 }
 
-
-@media (max-width: 920px) {
+@media (max-width: 850px) {
     .links1 {
         display: none;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        position: absolute;
+        top: 40px;
+        left: 0;
+        z-index: 999;
+        background-color: #4e4cae;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: add some shadow for better visibility */
+    }
+
+    .links1.active {
+        display: flex;
     }
 
     .menu-button {
         display: block;
-        margin-right: 20px;
-        cursor: pointer;
+    }
+
+    .navbar {
+        height: auto;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar h1 {
+        margin: 10px 0;
+    }
+    .dropdown-buttom{
+        margin: 10px;
+    }
+    #logout{
+        margin-left: 20px;
+    }
+    .logo{
         font-size: 20px;
     }
-}
-
-.menu-button {
-    display: none;
 }
