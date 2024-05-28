@@ -8,7 +8,8 @@ const port = process.env.PORT || 8000;
 
 app.use(express.json());
 app.use(cors({
-    origin: ["http://localhost:8000", "https://informapption-1.onrender.com"]
+    origin: ["http://localhost:8000", "https://informapption-1.onrender.com"],
+    credentials: true,
 }));
 
 app.use('/users', require('./routers/userRoutes'));
