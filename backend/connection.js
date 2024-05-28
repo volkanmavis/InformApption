@@ -1,14 +1,16 @@
 const mongoose = require('mongoose');
 
-const URI = "mongodb+srv://volkanmav:AK8F3Fe95iBpUJ3I@cluster0.cvpl35d.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-
-async function connectToDB() {
+const connectToDB = async () => {
     try {
-        await mongoose.connect(URI);
-        console.log("Connected to DB");
-    } catch (err) {
-        console.error("Error connecting to DB:", err);
+        await mongoose.connect(process.env.DB_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        console.log('Connected to MongoDB');
+    } catch (error) {
+        console.error('Error connecting to MongoDB', error);
+        process.exit(1); // Exit the process with failure
     }
-}
+};
 
 module.exports = connectToDB;
