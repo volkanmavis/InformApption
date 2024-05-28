@@ -12,6 +12,10 @@ app.use(cors());
 app.use('/users', require('./routers/userRoutes'));
 app.use('/questions', require('./routers/questionRoutes'));
 
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
 
 connectToDB();
 
