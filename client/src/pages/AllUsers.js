@@ -41,6 +41,7 @@ function AllUsers() {
         <div className='container'>
             {users.map((user) => (
                 <div className='card' key={user._id}>
+                    <p><b>Username:</b> {user.userName}</p>
                     <p><b>Email:</b> {user.email}</p>
                     <p><b>Role:</b> {user.role}</p>
                     <p><b>Id:</b> {user._id}</p>

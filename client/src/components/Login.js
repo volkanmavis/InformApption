@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import '../components/css/login.css'
-
+import '../components/css/login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (event) => {
@@ -24,11 +23,17 @@ const Login = () => {
         navigate('/play');
       } else {
         console.error('Invalid role received:', role);
-        navigate('/login')
+        navigate('/login');
       }
     } catch (error) {
-      console.log(error);
-      // Handle login errors here, e.g., display an error message to the user
+      // Check if the error response contains the error message
+      if (error.response && error.response.data && error.response.data.msg) {
+        // Display an alert with the error message received from the server
+        alert(error.response.data.msg);
+      } else {
+        // Display a generic error message
+        alert('An error occurred. Please try again later.');
+      }
     }
   };
 
@@ -55,7 +60,7 @@ const Login = () => {
           id="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-        /> 
+        />
         <button id="submit-button" align="center" onClick={handleLogin}>Login</button>
         <div>
           <p onClick={handleRegisterClick} align="center" id='not-registered'>Not registered yet?</p>

@@ -45,7 +45,7 @@ function SavedQuestions() {
                     <p><b>Question:</b> {question.question}</p>
                     <p><b>Answer:</b> {question.correctAnswer}</p>
                     <p><b>Incorrect Answers:</b> {question.IncorrectAnswers}</p>
-                    <button onClick={() => confirmDeleteQuestion(question._id)}>Delete</button>
+                    <button id='delete-question' onClick={() => confirmDeleteQuestion(question._id)}>Delete</button>
                 </div>
             ))}
         </div>

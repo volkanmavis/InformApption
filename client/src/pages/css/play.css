@@ -224,13 +224,20 @@
    }
 }
 
-.play-limit-message{
-    margin-top: 200px;
+.play-limit-message {
     display: flex;
     justify-content: center;
+    align-items: center; 
     font-family: "Comic Neue", cursive;
     font-weight: 700;
     font-style: normal;
     font-size: 20px;
     color: #f9b234;
+    position: absolute; 
+    top: 50%;
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    text-align: center; 
+    padding: 20px; 
 }
+
