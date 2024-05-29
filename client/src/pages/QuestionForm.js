@@ -26,7 +26,7 @@ function QuestionForm() {
       };
       console.log(questionInfo)
       event.preventDefault();
-      let res = await axios.post('http://localhost:8000/questions/create', questionInfo, {
+      let res = await axios.post(`http://localhost:${process.env.PORT || 8000}/questions/create`, questionInfo, {
         headers: { Authorization: `${token}` },
       });
 

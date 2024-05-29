@@ -7,7 +7,7 @@ function AllUsers() {
 
     const getAllUsers = async () => {
         try {
-            const response = await axios.get("http://localhost:8000/users/allusers");
+            const response = await axios.get(`http://localhost:${process.env.PORT || 8000}/users/allusers`);
             setUsers(response.data.data);
             console.log(response.data.data);
         } catch (error) {
@@ -21,7 +21,7 @@ function AllUsers() {
 
     const deleteUser = async (userId) => {
         try {
-            await axios.delete(`http://localhost:8000/users/${userId}`);
+            await axios.delete(`http://localhost:${process.env.PORT || 8000}/users/${userId}`);
             const updatedUsers = users.filter(user => user._id !== userId);
             setUsers(updatedUsers);
         } catch (error) {

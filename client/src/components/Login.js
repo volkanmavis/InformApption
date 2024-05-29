@@ -12,7 +12,7 @@ const Login = () => {
     event.preventDefault();
     try {
       let user = { email, password };
-      let res = await axios.post("http://localhost:8000/users/login", user);
+      let res = await axios.post(`http://localhost:${process.env.PORT || 8000}/users/login`, user);
       let token = res.data.token;
       localStorage.setItem("token", token);
 
@@ -26,12 +26,12 @@ const Login = () => {
         navigate('/login');
       }
     } catch (error) {
-      // Check if the error response contains the error message
+
       if (error.response && error.response.data && error.response.data.msg) {
-        // Display an alert with the error message received from the server
+
         alert(error.response.data.msg);
       } else {
-        // Display a generic error message
+
         alert('An error occurred. Please try again later.');
       }
     }

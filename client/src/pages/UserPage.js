@@ -33,7 +33,7 @@ function UserPage() {
     }
 
     try {
-      const response = await axios.get(`http://localhost:8000/users/score/${userId}`);
+      const response = await axios.get(`http://localhost:${process.env.PORT || 8000}/users/score/${userId}`);
       const allInfo = response.data.data;
 
       // Get the first three scores before sorting

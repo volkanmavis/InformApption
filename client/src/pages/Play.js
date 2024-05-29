@@ -19,7 +19,7 @@ function Play() {
 
   useEffect(() => {
     if (userId) {
-      axios.get(`http://localhost:8000/users/canPlay/${userId}`)
+      axios.get(`http://localhost:${process.env.PORT || 8000}/users/canPlay/${userId}`)
         .then(response => {
           const { canPlay, failedAttempts } = response.data;
           setCanPlay(canPlay);
@@ -54,7 +54,7 @@ function Play() {
   const fetchRandomQuestion = () => {
     setTimer(15);
 
-    fetch('http://localhost:8000/questions/allquestions')
+    fetch(`http://localhost:${process.env.PORT || 8000}/questions/allquestions`)
       .then(response => response.json())
       .then(data => {
         const questionDifficulty = data.data.filter(question => question.difficulty === `${choice}`);
@@ -85,7 +85,7 @@ function Play() {
       } else {
         setIsGameOver(true);
         if (userId) {
-          axios.post('http://localhost:8000/users/updateScore', { userId, score, choice })
+          axios.post(`http://localhost:${process.env.PORT || 8000}/users/updateScore`, { userId, score, choice })
             .then(response => {
               console.log('Score updated successfully.');
             })
@@ -93,7 +93,7 @@ function Play() {
               console.error('Error updating score:', error);
             });
 
-          axios.post('http://localhost:8000/users/updateFailedAttempts', { userId })
+          axios.post(`http://localhost:${process.env.PORT || 8000}/users/updateFailedAttempts`, { userId })
             .then(response => {
               const updatedFailedAttempts = response.data.failedAttempts;
               setFailedAttempts(updatedFailedAttempts);
@@ -115,7 +115,7 @@ function Play() {
   };
 
   const startGame = (chosenDifficulty) => {
-    axios.get(`http://localhost:8000/users/canPlay/${userId}`)
+    axios.get(`http://localhost:${process.env.PORT || 8000}/users/canPlay/${userId}`)
       .then(response => {
         const { canPlay, failedAttempts } = response.data;
         setCanPlay(canPlay);
@@ -148,7 +148,7 @@ function Play() {
     setCanPlay(true);
     localStorage.setItem('failedAttempts', '0');
     localStorage.setItem('canPlay', 'true');
-    axios.post('http://localhost:8000/users/resetFailedAttempts', { userId })
+    axios.post(`http://localhost:${process.env.PORT || 8000}/users/resetFailedAttempts`, { userId })
       .then(response => {
         console.log('Failed attempts reset successfully.');
       })
