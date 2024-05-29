@@ -13,7 +13,7 @@ function Register() {
     event.preventDefault(); 
     try {
       let user = { userName, email, password };
-      let res = await axios.post(`http://localhost:${process.env.PORT || 8000}/users/register`, user);
+      let res = await axios.post(`https://informapption.onrender.com/users/register`, user);
       console.log(res.data);
 
       navigate('/');

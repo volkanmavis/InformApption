@@ -12,7 +12,7 @@ const Login = () => {
     event.preventDefault();
     try {
       let user = { email, password };
-      let res = await axios.post(`http://localhost:${process.env.PORT || 8000}/users/login`, user);
+      let res = await axios.post(`https://informapption.onrender.com/users/login`, user);
       let token = res.data.token;
       localStorage.setItem("token", token);
 
