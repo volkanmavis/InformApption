@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Bar, Pie, PolarArea } from 'react-chartjs-2'; // Import PolarArea from react-chartjs-2
+import { Bar, Pie, PolarArea } from 'react-chartjs-2'; 
 import Chart from 'chart.js/auto';
 import './css/adminPage.css';
 
@@ -15,7 +15,7 @@ function AdminPage() {
 
     const getAllUsers = async () => {
         try {
-            const response = await axios.get(`http://localhost:${process.env.PORT || 8000}/users/allusers`);
+            const response = await axios.get(`https://informapption.onrender.com/users/allusers`);
             setUsers(response.data.data);
         } catch (error) {
             console.error('Error fetching users:', error);

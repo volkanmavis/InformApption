@@ -7,7 +7,7 @@ function SavedQuestions() {
 
     const getAllQuestions = async () => {
         try {
-            const response = await axios.get(`http://localhost:${process.env.PORT || 8000}/questions/allquestions`);
+            const response = await axios.get(`https://informapption.onrender.com/questions/allquestions`);
             setQuestions(response.data.data);
             console.log(response.data.data)
         } catch (error) {
@@ -21,7 +21,7 @@ function SavedQuestions() {
 
     const deleteQuestion = async (questionId) => {
         try {
-            await axios.delete(`http://localhost:${process.env.PORT || 8000}/questions/${questionId}`);
+            await axios.delete(`https://informapption.onrender.com/questions/${questionId}`);
             setQuestions(prevQuestions => prevQuestions.filter(question => question._id !== questionId));
         } catch (error) {
             console.error('Error deleting question:', error);

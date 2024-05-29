@@ -26,7 +26,7 @@ const Navbar = () => {
 
   const fetchUserScores = async (userId) => {
     try {
-      const response = await axios.get(`http://localhost:${process.env.PORT || 8000}/users/score/${userId}`);
+      const response = await axios.get(`https://informapption.onrender.com/users/score/${userId}`);
       setUserScores(response.data.data.scores);
     } catch (error) {
       console.error("Error fetching user scores:", error);
@@ -35,7 +35,7 @@ const Navbar = () => {
 
   const fetchUserAttempt = async (userId) => {
     try {
-      const response = await axios.get(`http://localhost:${process.env.PORT || 8000}/users/score/${userId}`);
+      const response = await axios.get(`https://informapption.onrender.com/users/score/${userId}`);
       setUserAttempt(response.data.data.failedAttempts.count);
     } catch (error) {
       console.error("Error fetching user attempts:", error);

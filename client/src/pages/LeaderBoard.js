@@ -15,7 +15,7 @@ function LeaderBoard() {
 
   const getAllUsers = async () => {
     try {
-      const response = await axios.get(`http://localhost:${process.env.PORT || 8000}/users/allusers`);
+      const response = await axios.get(`https://informapption.onrender.com/users/allusers`);
       const allUsers = response.data.data;
 
       const topScores = {
